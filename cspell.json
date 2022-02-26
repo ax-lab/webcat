@@ -2,6 +2,7 @@
 	"version": "0.2",
 	"language": "en",
 	"words": [
+		"consts"
 	],
 	"flagWords": [
 		"teh"
@@ -13,5 +14,6 @@
 		"package-lock.json"
 	],
 	"ignoreRegExpList": [
+		"`[^\\s]+`"
 	]
 }
