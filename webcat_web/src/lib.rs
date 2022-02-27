@@ -74,7 +74,7 @@ mod request_tests {
 
 	#[test]
 	fn simple_get_should_return_response_body() {
-		let server = TestServer::new("test server");
+		let server = TestServer::new_with_root_response("test server");
 		let url = format!("http://127.0.0.1:{}", server.port());
 		let result = Request::new()
 			.send(RequestMethod::GET, url)
@@ -85,7 +85,7 @@ mod request_tests {
 
 	#[test]
 	fn returns_404_for_inexistent_path() {
-		let server = TestServer::new("test server");
+		let server = TestServer::new_with_root_response("test server");
 		let url = format!("http://127.0.0.1:{}/this_does_not_exist", server.port());
 		let result = Request::new()
 			.send(RequestMethod::GET, url)
