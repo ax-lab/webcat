@@ -2,7 +2,12 @@ use webcat_web as web;
 
 pub fn run_script_to_string<S: AsRef<str>>(source: S) -> String {
 	let source = source.as_ref();
-	let source = source.trim().strip_prefix("GET ").unwrap();
+	let source = source.trim();
+	if source.len() == 0 {
+		return String::new();
+	}
+
+	let source = source.strip_prefix("GET ").unwrap();
 	web::Request::new()
 		.send(web::RequestMethod::GET, source)
 		.unwrap()
@@ -13,6 +18,12 @@ pub fn run_script_to_string<S: AsRef<str>>(source: S) -> String {
 mod tests {
 	use super::*;
 	use tux::*;
+
+	#[test]
+	fn empty_script_should_have_empty_output() {
+		let output = run_script_to_string("");
+		assert_eq!(output, "");
+	}
 
 	#[test]
 	fn script_with_a_simple_get_should_work() {
