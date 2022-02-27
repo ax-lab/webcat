@@ -1,7 +1,5 @@
-mod common;
-
 mod command_tests {
-	use super::common::*;
+	use tux::*;
 
 	#[test]
 	fn it_should_run() {
