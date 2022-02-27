@@ -6,6 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+webcat_script = { path = "../webcat_script" }
 
 [dev-dependencies]
 tux = { path = "../tux" }
