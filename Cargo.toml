@@ -2,6 +2,7 @@
 
 members = [
 	"webcat",
+	"webcat_script",
 	"webcat_web",
 	"tux"
 ]

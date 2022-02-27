@@ -19,8 +19,7 @@ impl Request {
 	}
 
 	pub fn send<T: AsRef<str>>(&self, method: RequestMethod, url: T) -> RequestResult {
-		let url = Url::parse(url.as_ref())
-			.map_err(|err| RequestError::InvalidConfiguration(err.to_string()))?;
+		let url = Self::parse_url(url)?;
 		let client = reqwest::blocking::Client::new();
 
 		let method = match method {
@@ -39,6 +38,18 @@ impl Request {
 			.map_err(|err| RequestError::ConnectionFailed(err.to_string()))?;
 		let response = Response::from_reqwest(response);
 		Ok(response)
+	}
+
+	fn parse_url<S: AsRef<str>>(url: S) -> Result<Url, RequestError> {
+		let url = url.as_ref();
+		let url = if !(url.starts_with("http://") || url.starts_with("https://")) {
+			let url = format!("http://{}", url);
+			Url::parse(&url)
+		} else {
+			Url::parse(url)
+		};
+
+		url.map_err(|err| RequestError::InvalidConfiguration(err.to_string()))
 	}
 }
 
@@ -69,13 +80,18 @@ mod tests {
 	use super::*;
 	use tux::*;
 
-	#[test]
-	fn request_returns_response_body() {
-		let server = TestServer::new_with_root_response("test server");
-		let url = format!("http://127.0.0.1:{}", server.port());
+	fn make_get_request_with_path(server: TestServer, path: &str) -> Response {
+		let url = format!("http://127.0.0.1:{}/{}", server.port(), path);
 		let result = Request::new()
 			.send(RequestMethod::GET, url)
 			.expect("request failed");
+		result
+	}
+
+	#[test]
+	fn request_returns_response_body() {
+		let server = TestServer::new_with_root_response("test server");
+		let result = make_get_request_with_path(server, "");
 		assert_eq!(result.status_code(), 200);
 		assert_eq!(result.text(), "test server");
 	}
@@ -83,12 +99,8 @@ mod tests {
 	#[test]
 	fn request_returns_404_for_inexistent_path() {
 		let server = TestServer::new_with_root_response("test server");
-		let url = format!("http://127.0.0.1:{}/this_does_not_exist", server.port());
-		let result = Request::new()
-			.send(RequestMethod::GET, url)
-			.expect("request failed");
-		let result = result.status_code();
-		assert_eq!(result, 404);
+		let result = make_get_request_with_path(server, "this_path_does_not_exist");
+		assert_eq!(result.status_code(), 404);
 	}
 
 	#[test]
@@ -120,5 +132,15 @@ mod tests {
 				panic!("did not fail")
 			}
 		}
+	}
+
+	#[test]
+	fn request_should_default_to_http() {
+		let server = TestServer::new_with_root_response("ok");
+		let url = format!("localhost:{}", server.port());
+		let result = Request::new()
+			.send(RequestMethod::GET, url)
+			.expect("request failed");
+		assert_eq!(result.text(), "ok");
 	}
 }

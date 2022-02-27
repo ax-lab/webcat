@@ -1,0 +1,12 @@
+[package]
+name = "webcat_script"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+webcat_web = { path = "../webcat_web" }
+
+[dev-dependencies]
+tux = { path = "../tux" }
