@@ -15,7 +15,7 @@ fn spawn_test_server() -> TestServer {
 fn webcat_should_run_input_script() {
 	let server = spawn_test_server();
 
-	let data = TestDataDir::create_new();
+	let data = TestTempDir::create_new();
 	data.create_file(
 		"simple_request.txt",
 		format!("GET localhost:{}", server.port()),
@@ -29,7 +29,7 @@ fn webcat_should_run_input_script() {
 fn webcat_should_run_multiple_input_scripts() {
 	let server = spawn_test_server();
 
-	let data = TestDataDir::create_new();
+	let data = TestTempDir::create_new();
 	data.create_file(
 		"request_a.txt",
 		format!("GET localhost:{}/a", server.port()),
