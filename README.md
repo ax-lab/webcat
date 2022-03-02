@@ -40,3 +40,13 @@ In addition to the above, the following features are also planned:
 The goal is to have all those features first by using plain text files and as
 a command-line tool, later adding a GUI on top to provide things like improved
 data visualization and ease of use.
+
+## Development
+
+This project uses submodules:
+
+```sh
+# execute these commands after cloning
+git submodule init
+git submodule update
+```

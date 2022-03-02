@@ -3,6 +3,9 @@
 members = [
 	"webcat",
 	"webcat_script",
-	"webcat_web",
-	"tux"
+	"webcat_web"
+]
+
+exclude = [
+	"libs"
 ]

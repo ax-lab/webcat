@@ -9,4 +9,4 @@ edition = "2021"
 webcat_web = { path = "../webcat_web" }
 
 [dev-dependencies]
-tux = { path = "../tux" }
+tux = { path = "../libs/tux/tux" }

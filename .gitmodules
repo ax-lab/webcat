@@ -1,0 +1,3 @@
+[submodule "libs/tux"]
+	path = libs/tux
+	url = git@github.com:ax-lab/tux.git
