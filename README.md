@@ -43,7 +43,7 @@ data visualization and ease of use.
 
 ## Development
 
-This project uses submodules:
+This project uses [git submodules](https://www.atlassian.com/git/tutorials/git-submodule):
 
 ```sh
 # execute these commands after cloning
