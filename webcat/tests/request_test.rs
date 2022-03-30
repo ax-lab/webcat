@@ -15,13 +15,13 @@ fn spawn_test_server() -> TestServer {
 fn webcat_should_run_input_script() {
 	let server = spawn_test_server();
 
-	let data = TestTempDir::create_new();
+	let data = temp_dir();
 	data.create_file(
 		"simple_request.txt",
 		format!("GET localhost:{}", server.port()),
 	);
 
-	let output = data.run_and_get_output("webcat", &["simple_request.txt"]);
+	let output = data.run_bin("webcat", &["simple_request.txt"]);
 	assert_eq!(output.trim(), "get test root");
 }
 
@@ -29,7 +29,7 @@ fn webcat_should_run_input_script() {
 fn webcat_should_run_multiple_input_scripts() {
 	let server = spawn_test_server();
 
-	let data = TestTempDir::create_new();
+	let data = temp_dir();
 	data.create_file(
 		"request_a.txt",
 		format!("GET localhost:{}/a", server.port()),
@@ -39,6 +39,6 @@ fn webcat_should_run_multiple_input_scripts() {
 		format!("GET localhost:{}/b", server.port()),
 	);
 
-	let output = data.run_and_get_output("webcat", &["request_a.txt", "request_b.txt"]);
+	let output = data.run_bin("webcat", &["request_a.txt", "request_b.txt"]);
 	assert_eq!(output.trim(), "route a\nroute b");
 }
